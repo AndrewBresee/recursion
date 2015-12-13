@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+
+    <style>
+    </style>
+
+  </head>
+
+  <body>
+    <script>
+
+
+    var myJSON = [{"firstName": "Andrew", "lastName": "Bresee"}, {"firstName": "Joanna", "lastName": "White"}, {"firstName": "James", "lastName": "McKnee"}]
+
+    console.log(myJSON.pop())
+
+    var string = function(obj){
+    	var newString = ""
+    	if(obj.constructor === Array){
+    		newString += "["
+    		for(var i = 0; i<obj.length; i++){
+    			console.log("String Test");
+    			console.log(newString)
+    			newString += string(obj[i])
+    		}
+    		newString += "]"
+    	} else if(obj.constructor === Object){
+    		newString += "{";
+    		for(var key in obj){
+    			console.log("String Test")
+    			newString += key
+    			newString += ":"
+    			newString += string(obj[key])
+    		}
+    		newString += "}"
+    	} else {
+    		var type = (typeof obj);
+    		if(type != "undefined" || type != "boolean" || type != "function" || type != "symbol"){
+    			newString += null
+    		} else {
+    			newString += obj
+    		}
+    		return
+    }
+    return newString; 
+};
+
+    		
+
+console.log(string(myJSON))
+
+    </script>
+
+
+  </body>
+</html>
