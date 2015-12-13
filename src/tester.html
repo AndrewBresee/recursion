@@ -31,6 +31,7 @@
     			newString += string(obj[key])
     		}
     		newString += "}"
+    		newString += ","
     	} else {
     		var type = (typeof obj);
     		if(type != "undefined" || type != "boolean" || type != "function" || type != "symbol"){
