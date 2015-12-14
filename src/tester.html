@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -11,47 +12,44 @@
   <body>
     <script>
 
+var htmlStrings = [
+  '<p class="targetClassName"></p>',
+  '<p class="otherClassName targetClassName"></p>',
+  '<p><p class="targetClassName"></p></p>',
+  '<p><p class="targetClassName"><p class="targetClassName"></p></p></p>',
+  '<p><p></p><p><p class="targetClassName"></p></p></p>',
+  '<p><p class="targetClassName"></p><p class="targetClassName"></p></p>',
+  '<p><div class="somediv"><div class="innerdiv"><span class="targetClassName">yay</span></div></div></p>'
+];
 
-    var myJSON = [{"firstName": [1,2,3,4], "lastName": [1,2,3]}, {"firstName": "Joanna", "lastName": "White"}, {"firstName": "James", "lastName": "McKnee"}]
+describe('getElementsByClassName', function(){
+
+  it('should match the results of calling the built-in function', function(){
+    $('body').addClass('targetClassName');
+    htmlStrings.forEach(function(htmlString){
+      var $rootElement = $(htmlString);
+      $('body').append($rootElement);
+
+      var result = getElementsByClassName('targetClassName');
+      var expectedNodeList = document.getElementsByClassName('targetClassName');
+      var expectedArray = Array.prototype.slice.apply(expectedNodeList);
+      var equality = _.isEqual(result, expectedArray); // why can't we use `===` here?
+      expect(equality).to.equal(true);
+
+      $rootElement.remove();
+    });
+    $('body').removeClass('targetClassName');
+  });
+
+});
+
+console.log(htmlStrings)
+    </script>
 
 
-    var string = function(obj){
-		var newString = ""; 
+  </body>
+</html>
 
-    	if(obj.constructor === Array){
-    		newString += "["
-    		for(var i = 0; i<obj.length; i++){
-    			newString += string(obj[i]) + ","; 
-    		}
-
-    		newString = newString.slice(0, -1);
-    		newString += "]"
-
-    	} else if(obj.constructor === Object){
-    		newString += "{";
-    		for(var key in obj){
-    			newString += key
-    			newString += ":"
-    			newString += string(obj[key]) + ",";
-    		}
-
-    		newString = newString.slice(0, -1);
-    		newString += "}"
-    	} else {
-    		var type = (typeof obj);
-    		if(type != "undefined" || type != "boolean" || type != "function" || type != "symbol"){
-    			newString += obj; 
-    		} else {
-    			newString += "null"
-    		}
-    		return newString;
-    }
-    
-    return newString; 
-
-};
-
-console.log(string(myJSON))
 
     </script>
 
