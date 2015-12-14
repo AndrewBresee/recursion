@@ -23,6 +23,7 @@
     		for(var i = 0; i<obj.length; i++){
     			newString += string(obj[i]) + ","; 
     		}
+
     		newString = newString.slice(0, -1);
     		newString += "]"
 
@@ -33,18 +34,19 @@
     			newString += ":"
     			newString += string(obj[key]) + ",";
     		}
+
     		newString = newString.slice(0, -1);
     		newString += "}"
     	} else {
     		var type = (typeof obj);
     		if(type != "undefined" || type != "boolean" || type != "function" || type != "symbol"){
-
     			newString += obj; 
     		} else {
     			newString += "null"
     		}
     		return newString;
     }
+    
     return newString; 
 
 };
