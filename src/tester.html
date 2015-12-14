@@ -14,55 +14,40 @@
 
     var myJSON = [{"firstName": [1,2,3,4], "lastName": [1,2,3]}, {"firstName": "Joanna", "lastName": "White"}, {"firstName": "James", "lastName": "McKnee"}]
 
+
     var string = function(obj){
-    	var newString = ""; 
-    
+		var newString = ""; 
+
     	if(obj.constructor === Array){
-
-
     		newString += "["
     		for(var i = 0; i<obj.length; i++){
-    			newString += string(obj[i])
+    			newString += string(obj[i]) + ","; 
     		}
-
     		newString = newString.slice(0, -1);
     		newString += "]"
-    		newString += ","
 
     	} else if(obj.constructor === Object){
-    		var objLength = obj.length; 
-    		var objIndex = 0;
-
-
     		newString += "{";
     		for(var key in obj){
-    			objIndex += 1;
-
     			newString += key
     			newString += ":"
-    			newString += string(obj[key]);
+    			newString += string(obj[key]) + ",";
     		}
     		newString = newString.slice(0, -1);
     		newString += "}"
-    		newString += ","
-    		
     	} else {
     		var type = (typeof obj);
     		if(type != "undefined" || type != "boolean" || type != "function" || type != "symbol"){
 
     			newString += obj; 
-    			newString += ","; 
     		} else {
     			newString += "null"
     		}
     		return newString;
     }
-
     return newString; 
 
 };
-
-    		
 
 console.log(string(myJSON))
 
