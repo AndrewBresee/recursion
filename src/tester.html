@@ -11,39 +11,75 @@
 
   <body>
     <script>
+// this is what you would do if you liked things to be easy:
+// var stringifyJSON = JSON.stringify;
 
-var htmlStrings = [
-  '<p class="targetClassName"></p>',
-  '<p class="otherClassName targetClassName"></p>',
-  '<p><p class="targetClassName"></p></p>',
-  '<p><p class="targetClassName"><p class="targetClassName"></p></p></p>',
-  '<p><p></p><p><p class="targetClassName"></p></p></p>',
-  '<p><p class="targetClassName"></p><p class="targetClassName"></p></p>',
-  '<p><div class="somediv"><div class="innerdiv"><span class="targetClassName">yay</span></div></div></p>'
-];
+// but you don't so you're going to write it from scratch:
 
-describe('getElementsByClassName', function(){
 
-  it('should match the results of calling the built-in function', function(){
-    $('body').addClass('targetClassName');
-    htmlStrings.forEach(function(htmlString){
-      var $rootElement = $(htmlString);
-      $('body').append($rootElement);
+var me = [{"firstName": "Andrew", "lastName": "Bresee"},[1,2,3,4]]
 
-      var result = getElementsByClassName('targetClassName');
-      var expectedNodeList = document.getElementsByClassName('targetClassName');
-      var expectedArray = Array.prototype.slice.apply(expectedNodeList);
-      var equality = _.isEqual(result, expectedArray); // why can't we use `===` here?
-      expect(equality).to.equal(true);
+var stringifyJSON = function(obj) {
+	var newString = ""; 
+	console.log("Initial: "+obj)
 
-      $rootElement.remove();
-    });
-    $('body').removeClass('targetClassName');
-  });
+    if(obj === undefined){ 
+        return newString; 
+    } else if (obj === null){
+        newString += "null";
+        return newString;
+    }
 
-});
+    if(obj.constructor === Array){
+		newString += "["
+		for(var i = 0; i<obj.length; i++){
+			//the + "," adds between each element. [123] --> [1,2,3,]
+			newString += stringifyJSON(obj[i]) + ","; 
+		}
 
-console.log(htmlStrings)
+		//Removes the "," at the end of a list, so [1,2,3,] --> [1,2,3]
+        if(newString != "["){
+            newString = newString.slice(0, -1);
+        }
+		newString += "]"; 
+
+	} else if(obj.constructor === Object){
+		newString += "{";
+
+		for(var key in obj){
+			//the + "," adds between each element. {key:valuekey:vale} --> {key:value, key:vale,}
+            //Probably can refactor this because it happens in the next case as well
+            if(typeof obj[key] != 'function' && typeof obj[key] != 'undefined' && obj[key] != "undefined"){
+                newString += "\""+key+"\"";
+                newString += ":"; 
+                newString += stringifyJSON(obj[key]) + ",";
+            } 
+		}
+		//Removes the "," at the end of a list, so {1:2, 3:4,} --> {1:2, 3:4}
+        if(newString != "{"){
+            newString = newString.slice(0, -1);
+        }
+		newString += "}"; 
+
+	} else {
+		console.log("Final: "+obj)
+		var type = (typeof obj);
+		if(type != "undefined" || type != "function" || type != "symbol"|| type != null){
+            if(type === 'number' || type === 'boolean'){
+                newString += obj; 
+            } else {
+                newString += "\""+obj+"\""; 
+            }
+		} else {
+			newString += "null"
+		}
+		return newString;
+	}
+    return newString; 
+};
+
+stringifyJSON(me);
+
     </script>
 
 
