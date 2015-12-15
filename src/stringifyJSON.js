@@ -7,6 +7,10 @@
 var stringifyJSON = function(obj) {
 	var newString = ""; 
 
+
+    //this is nore important when the value from the object is passed  in. 
+    //if the value is undefined, it will return the string, and not return 
+    //the key value pair. 
     if(obj === undefined){ 
         return newString; 
     } else if (obj === null){
@@ -14,18 +18,24 @@ var stringifyJSON = function(obj) {
         return newString;
     }
 
+
+
     if(obj.constructor === Array){
 		newString += "["
+
 		for(var i = 0; i<obj.length; i++){
-			//the + "," adds between each element. [123] --> [1,2,3,]
+			//the (+ ",") adds between each element. [123] --> [1,2,3,]
 			newString += stringifyJSON(obj[i]) + ","; 
 		}
 
 		//Removes the "," at the end of a list, so [1,2,3,] --> [1,2,3]
+        //Unless the array is empty. Then it will not remove the last item, which would be "["
         if(newString != "["){
             newString = newString.slice(0, -1);
         }
 		newString += "]"; 
+
+
 
 	} else if(obj.constructor === Object){
 		newString += "{";
